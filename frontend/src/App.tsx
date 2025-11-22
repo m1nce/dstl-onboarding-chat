@@ -38,7 +38,7 @@ function App() {
       {/* Sidebar */}
       <div className='w-64 bg-gray-900 text-white p-4 flex flex-col'>
         <div className='mb-4'>
-          <h1 className='text-xl font-bold'>Chat App</h1>
+          <h1 className='text-xl font-bold'>DSTL Chat App</h1>
         </div>
         <button
           className='w-full py-2 px-4 border border-gray-600 rounded hover:bg-gray-800 text-left mb-4'
@@ -76,7 +76,9 @@ function App() {
           ))}
           {messages.length === 0 && (
             <div className='text-center text-gray-500 mt-20'>
-              <h2 className='text-2xl font-semibold'>Welcome to Chat App</h2>
+              <h2 className='text-2xl font-semibold'>
+                Welcome to the DSTL Chat App
+              </h2>
               <p>Start a conversation!</p>
             </div>
           )}
