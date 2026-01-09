@@ -1,13 +1,22 @@
 from contextlib import asynccontextmanager
 from typing import List
+import os
+from pathlib import Path
+from dotenv import load_dotenv
 
 from fastapi import Depends, FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 from sqlmodel import Session, SQLModel, select
 
 from .database import create_db_and_tables, get_session, seed_db
 from .models import Conversation, Message
 from .llm import generate_llm_response
+
+load_dotenv()
+
+ENVIRONMENT = os.getenv("ENVIRONMENT", "development")
+print("ENVIRONMENT in FastAPI:", ENVIRONMENT)
 
 def get_conversation_messages(session: Session, conversation_id: int) -> list[Message]:
     """
@@ -59,6 +68,15 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# In production, also serve the built frontend from /app
+if ENVIRONMENT == "production":
+    static_dir = Path(__file__).parent / "static"
+    app.mount(
+        "/app",
+        StaticFiles(directory=static_dir, html=True),
+        name="static",
+    )
 
 
 @app.post("/conversations/", response_model=ConversationRead)

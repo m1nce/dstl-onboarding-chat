@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
-import remarkGfm from 'remark-gfm';
 
-const API_BASE = 'http://127.0.0.1:8100';
+const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8100';
 
 type Message = {
   id?: number;
@@ -206,6 +205,10 @@ function App() {
       <div className='flex-1 flex flex-col'>
         {/* Messages Area */}
         <div className='flex-1 overflow-y-auto p-4 space-y-4'>
+          {isLoadingMessages && (
+            <div className='text-sm text-gray-400'>Loading messages...</div>
+          )}
+
           {messages.map((msg, index) => (
             <div
               key={index}
@@ -226,7 +229,7 @@ function App() {
             </div>
             </div>
           ))}
-          {messages.length === 0 && (
+          {messages.length === 0 && !isLoadingMessages && (
             <div className='text-center text-gray-500 mt-20'>
               <h2 className='text-2xl font-semibold'>
                 Welcome to the DSTL Chat App
